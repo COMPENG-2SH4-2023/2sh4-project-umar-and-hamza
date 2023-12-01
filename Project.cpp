@@ -66,22 +66,35 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
-    int i, j;
-    objPos playerObjPos;
-    myPlayer->getPlayerPos(playerObjPos);
+    int i, j, k;
+    objPosArrayList *PlayerBody = myPlayer->getPlayerPos();
+    objPos tempBody;
+    bool drawn;
 
     // Initialize Gameboard with boundaries
     for (i = 0; i < gameMechs->getBoardSizeY(); i++)
     {
         for (j = 0; j < gameMechs->getBoardSizeX(); j++)
         {
+            drawn = false;
+
+            for (k = 0; k < PlayerBody->getSize(); k++)
+            {
+                PlayerBody->getElement(tempBody, k);
+                if (tempBody.y == i && tempBody.x == j)
+                {
+                    MacUILib_printf("%c", tempBody.getSymbol());
+                    drawn = true;
+                    break;
+                }
+            }
+
+            if (drawn)
+                continue;
+
             if (i == 0 || i == gameMechs->getBoardSizeY() - 1 || j == 0 || j == gameMechs->getBoardSizeX() - 1)
             {
                 MacUILib_printf("%c", '#');
-            }
-            else if (i == playerObjPos.y && j == playerObjPos.x)
-            {
-                MacUILib_printf("%c", playerObjPos.getSymbol());
             }
             else
             {

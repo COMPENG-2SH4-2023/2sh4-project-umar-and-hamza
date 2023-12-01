@@ -7,21 +7,27 @@ Player::Player(GameMechs *thisGMRef)
     myDir = STOP;
 
     // more actions to be included
+
     int boardsizeX = mainGameMechsRef->getBoardSizeX();
     int boardsizeY = mainGameMechsRef->getBoardSizeY();
 
-    playerPos.setObjPos(boardsizeX / 2, boardsizeY / 2, '*');
+    objPos tempPos;
+    tempPos.setObjPos(boardsizeX / 2, boardsizeY / 2, '*');
+
+    playerPosList = new objPosArrayList();
+    playerPosList->insertHead(tempPos);
 }
 
 Player::~Player()
 {
     // delete any heap members here
+    delete playerPosList;
 }
 
-void Player::getPlayerPos(objPos &returnPos)
+objPosArrayList *Player::getPlayerPos()
 {
     // return the reference to the playerPos array list
-    returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    return playerPosList;
 }
 
 void Player::updatePlayerDir()
@@ -60,40 +66,36 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
+    objPos currentHead;
+    playerPosList->getHeadElement(currentHead);
+
     // PPA3 Finite State Machine logic
     switch (myDir)
     {
     case UP:
-        playerPos.y--;
+        currentHead.y--;
+        if (currentHead.y <= 0)
+            currentHead.y = mainGameMechsRef->getBoardSizeY() - 2;
         break;
     case DOWN:
-        playerPos.y++;
+        currentHead.y++;
+        if (currentHead.y >= mainGameMechsRef->getBoardSizeY() - 1)
+            currentHead.y = 1;
         break;
     case LEFT:
-        playerPos.x--;
+        currentHead.x--;
+        if (currentHead.x <= 0)
+            currentHead.x = mainGameMechsRef->getBoardSizeX() - 2;
         break;
     case RIGHT:
-        playerPos.x++;
+        currentHead.x++;
+        if (currentHead.x >= mainGameMechsRef->getBoardSizeX() - 1)
+            currentHead.x = 1;
+        break;
+    case STOP:
+    default:
         break;
     }
-
-    // Reset player's position if it goes out of bounds horizontally
-    if (playerPos.x < 1)
-    {
-        playerPos.x = mainGameMechsRef->getBoardSizeX() - 2;
-    }
-    else if (playerPos.x >= mainGameMechsRef->getBoardSizeX() - 1)
-    {
-        playerPos.x = 1;
-    }
-
-    // Reset player's position if it goes out of bounds vertically
-    if (playerPos.y < 1)
-    {
-        playerPos.y = mainGameMechsRef->getBoardSizeY() - 2;
-    }
-    else if (playerPos.y >= mainGameMechsRef->getBoardSizeY() - 1)
-    {
-        playerPos.y = 1;
-    }
+    playerPosList->insertHead(currentHead);
+    playerPosList->removeTail();
 }
