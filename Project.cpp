@@ -3,6 +3,8 @@
 #include "objPos.h"
 #include "GameMechs.h"
 #include "Player.h"
+#include "Food.h"
+#include "objPosArrayList.h"
 
 using namespace std;
 
@@ -10,6 +12,8 @@ using namespace std;
 
 GameMechs *gameMechs;
 Player *myPlayer;
+Food *food;
+objPos current_player_loc;
 
 void Initialize(void);
 void GetInput(void);
@@ -40,27 +44,40 @@ void Initialize(void)
     MacUILib_clearScreen();
     gameMechs = new GameMechs(30, 15);
     myPlayer = new Player(gameMechs);
+    food = new Food();
+
+    
+    food-> generateFood(current_player_loc);
 }
 
 void GetInput(void)
 {
-    if (MacUILib_hasChar())
-    {
-        char userInput = MacUILib_getChar();
-        gameMechs->setInput(userInput);
-    }
+    char userInput = gameMechs->getInput();
+    gameMechs->setInput(userInput);
+
+    
 }
 
 void RunLogic(void)
 {
 
-    if (gameMechs->getInput() == ' ')
+    char userInput = gameMechs->getInput();
+   
+
+    if (userInput == ' ')
     {
         gameMechs->setExitTrue();
     }
+    else if(userInput == 'k')
+    {
+        food->generateFood(current_player_loc);
+    }
+   
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     gameMechs->clearInput();
+    
+
 }
 
 void DrawScreen(void)
@@ -69,6 +86,8 @@ void DrawScreen(void)
     int i, j, k;
     objPosArrayList *PlayerBody = myPlayer->getPlayerPos();
     objPos tempBody;
+    objPos current_food;
+    food->getFoodPos(current_food);
     bool drawn;
 
     // Initialize Gameboard with boundaries
@@ -95,6 +114,10 @@ void DrawScreen(void)
             if (i == 0 || i == gameMechs->getBoardSizeY() - 1 || j == 0 || j == gameMechs->getBoardSizeX() - 1)
             {
                 MacUILib_printf("%c", '#');
+            }
+            else if (i == current_food.y && j == current_food.x)
+            {
+                MacUILib_printf("%c", current_food.getSymbol());
             }
             else
             {
