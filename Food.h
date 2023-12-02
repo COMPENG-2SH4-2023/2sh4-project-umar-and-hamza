@@ -15,7 +15,7 @@ class Food
         ~Food();
 
 
-        void generateFood(objPos blockOff);
+        void generateFood(objPosArrayList& playerPosList);
         void getFoodPos(objPos &returnPos);
 
 

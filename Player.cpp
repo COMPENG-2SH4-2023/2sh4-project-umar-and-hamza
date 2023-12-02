@@ -4,6 +4,7 @@
 Player::Player(GameMechs *thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
+
     myDir = STOP;
 
     // more actions to be included
@@ -15,6 +16,7 @@ Player::Player(GameMechs *thisGMRef)
     tempPos.setObjPos(boardsizeX / 2, boardsizeY / 2, '*');
 
     playerPosList = new objPosArrayList();
+    food = new Food();
     playerPosList->insertHead(tempPos);
 }
 
@@ -22,6 +24,7 @@ Player::~Player()
 {
     // delete any heap members here
     delete playerPosList;
+    delete food;
 }
 
 objPosArrayList *Player::getPlayerPos()
@@ -104,6 +107,8 @@ void Player::movePlayer()
         return;
     }
 
+
+
     playerPosList->insertHead(currentHead);
     playerPosList->removeTail();
 }
@@ -121,4 +126,27 @@ bool Player::checkSelfCollision(const objPos &head)
         }
     }
     return false;
+}
+
+bool Player::checkFoodConsumption(const objPos &currentFood)
+{
+    objPos currentHead;
+    playerPosList->getHeadElement(currentHead);
+
+    // Get the current food position
+    
+
+    // Check if the head overlaps with the food position
+    return (currentHead.x == currentFood.x && currentHead.y == currentFood.y);
+}
+
+void Player::increasePlayerLength()
+{
+    objPos currentHead;
+    playerPosList->getHeadElement(currentHead);
+    playerPosList->insertHead(currentHead);
+
+    food->generateFood(*playerPosList);
+
+    mainGameMechsRef->incrementScore();
 }

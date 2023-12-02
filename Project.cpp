@@ -46,7 +46,7 @@ void Initialize(void)
     myPlayer = new Player(gameMechs);
     food = new Food();
 
-    food->generateFood(current_player_loc);
+    food->generateFood(*(myPlayer->getPlayerPos()));
 }
 
 void GetInput(void)
@@ -59,6 +59,8 @@ void RunLogic(void)
 {
 
     char userInput = gameMechs->getInput();
+    objPos currentFood;
+    food->getFoodPos(currentFood);
 
     if (userInput == ' ')
     {
@@ -66,9 +68,14 @@ void RunLogic(void)
     }
     else if (userInput == 'k')
     {
-        food->generateFood(current_player_loc);
+        food->generateFood(*(myPlayer->getPlayerPos()));
     }
 
+    else if (myPlayer->checkFoodConsumption(currentFood))
+    {
+        myPlayer->increasePlayerLength();
+        food->generateFood(*(myPlayer->getPlayerPos()));
+    }
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     gameMechs->clearInput();
