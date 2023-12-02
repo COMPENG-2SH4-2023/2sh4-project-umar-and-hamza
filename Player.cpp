@@ -107,8 +107,6 @@ void Player::movePlayer()
         return;
     }
 
-
-
     playerPosList->insertHead(currentHead);
     playerPosList->removeTail();
 }
@@ -134,7 +132,6 @@ bool Player::checkFoodConsumption(const objPos &currentFood)
     playerPosList->getHeadElement(currentHead);
 
     // Get the current food position
-    
 
     // Check if the head overlaps with the food position
     return (currentHead.x == currentFood.x && currentHead.y == currentFood.y);
@@ -149,4 +146,15 @@ void Player::increasePlayerLength()
     food->generateFood(*playerPosList);
 
     mainGameMechsRef->incrementScore();
+}
+const char *Player::getDirectionString() const
+{
+    const char *directionStrings[] = {"UP", "DOWN", "LEFT", "RIGHT", "STOP"};
+
+    if (myDir >= UP && myDir <= STOP)
+    {
+        return directionStrings[myDir];
+    }
+
+    return "UNKNOWN";
 }

@@ -3,6 +3,7 @@
 GameMechs::GameMechs()
 {
     input = 0;
+    score = 0;
     exitFlag = false;
     loseFlag = false;
     boardSizeX = 20;
@@ -12,7 +13,9 @@ GameMechs::GameMechs()
 GameMechs::GameMechs(int boardX, int boardY)
 {
     input = 0;
+    score = 0;
     exitFlag = false;
+    loseFlag = false;
     boardSizeX = boardX;
     boardSizeY = boardY;
 }

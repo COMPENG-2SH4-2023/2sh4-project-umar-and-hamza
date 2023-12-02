@@ -62,7 +62,7 @@ void RunLogic(void)
     objPos currentFood;
     food->getFoodPos(currentFood);
 
-    if (userInput == ' ')
+    if (userInput == char(27))
     {
         gameMechs->setExitTrue();
     }
@@ -90,6 +90,9 @@ void DrawScreen(void)
     objPos current_food;
     food->getFoodPos(current_food);
     bool drawn;
+    const char *directionString;
+
+    MacUILib_printf("use 'w' 'a' 's' 'd' to move. Press esc to quit\n\n");
 
     // Initialize Gameboard with boundaries
     for (i = 0; i < gameMechs->getBoardSizeY(); i++)
@@ -104,6 +107,7 @@ void DrawScreen(void)
                 if (tempBody.y == i && tempBody.x == j)
                 {
                     MacUILib_printf("%c", tempBody.getSymbol());
+                    directionString = myPlayer->getDirectionString();
                     drawn = true;
                     break;
                 }
@@ -127,6 +131,7 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
+    MacUILib_printf("\nScore = %d\nBoard Size: <%d,%d>\nPlayer Direction: %s\nPlayer position: <%d,%d>\nFood Coordinates: <%d,%d>\n", gameMechs->getScore(), gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY(), directionString, tempBody.x, tempBody.y, current_food.x, current_food.y);
 }
 void LoopDelay(void)
 {
@@ -135,11 +140,16 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
+    MacUILib_clearScreen();
+    if (gameMechs->getLoseFlagStatus())
+        MacUILib_printf("%s %d", "You Died! Final score:", gameMechs->getScore());
+
+    else if (gameMechs->getExitFlagStatus())
+        MacUILib_printf("You Quit!"); // print a successful quit message if the exit flag is true
 
     delete gameMechs;
     delete myPlayer;
     delete food;
-    MacUILib_clearScreen();
 
     MacUILib_uninit();
 }
