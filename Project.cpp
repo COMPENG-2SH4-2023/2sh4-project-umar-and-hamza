@@ -46,38 +46,32 @@ void Initialize(void)
     myPlayer = new Player(gameMechs);
     food = new Food();
 
-    
-    food-> generateFood(current_player_loc);
+    food->generateFood(current_player_loc);
 }
 
 void GetInput(void)
 {
     char userInput = gameMechs->getInput();
     gameMechs->setInput(userInput);
-
-    
 }
 
 void RunLogic(void)
 {
 
     char userInput = gameMechs->getInput();
-   
 
     if (userInput == ' ')
     {
         gameMechs->setExitTrue();
     }
-    else if(userInput == 'k')
+    else if (userInput == 'k')
     {
         food->generateFood(current_player_loc);
     }
-   
+
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     gameMechs->clearInput();
-    
-
 }
 
 void DrawScreen(void)
@@ -137,6 +131,7 @@ void CleanUp(void)
 
     delete gameMechs;
     delete myPlayer;
+    delete food;
     MacUILib_clearScreen();
 
     MacUILib_uninit();

@@ -96,6 +96,29 @@ void Player::movePlayer()
     default:
         break;
     }
+
+    if (checkSelfCollision(currentHead))
+    {
+        mainGameMechsRef->setLoseFlag();
+        mainGameMechsRef->setExitTrue();
+        return;
+    }
+
     playerPosList->insertHead(currentHead);
     playerPosList->removeTail();
+}
+bool Player::checkSelfCollision(const objPos &head)
+{
+
+    for (int i = 1; i < playerPosList->getSize(); i++)
+    {
+        objPos snakeBody;
+        playerPosList->getElement(snakeBody, i);
+
+        if (head.x == snakeBody.x && head.y == snakeBody.y)
+        {
+            return true;
+        }
+    }
+    return false;
 }

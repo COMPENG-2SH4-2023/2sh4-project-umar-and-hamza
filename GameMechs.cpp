@@ -7,8 +7,6 @@ GameMechs::GameMechs()
     loseFlag = false;
     boardSizeX = 20;
     boardSizeY = 10;
-
-
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -17,11 +15,9 @@ GameMechs::GameMechs(int boardX, int boardY)
     exitFlag = false;
     boardSizeX = boardX;
     boardSizeY = boardY;
-    
 }
 
 // do you need a destructor?
-
 
 bool GameMechs::getExitFlagStatus()
 {
@@ -40,13 +36,12 @@ bool GameMechs::getLoseFlagStatus()
 
 void GameMechs::setLoseFlag()
 {
-    loseFlag= true;
+    loseFlag = true;
 }
-
 
 char GameMechs::getInput()
 {
-    if(MacUILib_hasChar())
+    if (MacUILib_hasChar())
     {
         input = MacUILib_getChar();
     }
@@ -65,6 +60,7 @@ void GameMechs::clearInput()
     {
         c = MacUILib_getChar();
     }
+    input = 0;
 }
 
 int GameMechs::getBoardSizeX()
@@ -86,7 +82,3 @@ void GameMechs::incrementScore()
 {
     score++;
 }
-
-
-
-
