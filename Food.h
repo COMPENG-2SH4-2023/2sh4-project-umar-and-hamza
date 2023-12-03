@@ -5,21 +5,17 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 
-
 class Food
 {
-    private:
-        objPos foodPos;
-    public:
-        Food();
-        ~Food();
+private:
+    objPos foodPos;
 
+public:
+    Food();
+    ~Food();
 
-        void generateFood(objPosArrayList& playerPosList);
-        void getFoodPos(objPos &returnPos);
-
-
-
+    void generateFood(objPosArrayList &playerPosList);
+    void getFoodPos(objPos &returnPos);
 };
 
 #endif

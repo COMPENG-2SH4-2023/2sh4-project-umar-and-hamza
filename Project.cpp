@@ -83,20 +83,20 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();
     int i, j, k;
-    objPos tempBody;
-    objPos current_food;
-    food->getFoodPos(current_food);
-    bool drawn;
-    const char *directionString;
+    objPos tempBody;                // object created to store body position temporarily
+    objPos current_food;            // object created to store current food.
+    food->getFoodPos(current_food); // Accesses the position of current food.
+    bool drawn;                     // Flag variable
+    const char *directionString;    // stores player direction
 
-    MacUILib_printf("use 'w' 'a' 's' 'd' to move. Press esc to quit\n\n");
+    MacUILib_printf("use 'w' 'a' 's' 'd' to move. Press esc to quit.\n\n");
 
     // Initialize Gameboard with boundaries
     for (i = 0; i < gameMechs->getBoardSizeY(); i++)
     {
         for (j = 0; j < gameMechs->getBoardSizeX(); j++)
         {
-            drawn = false;
+            drawn = false; // Snake body is not drawn yet
 
             for (k = 0; k < PlayerBody->getSize(); k++)
             {
@@ -110,24 +110,26 @@ void DrawScreen(void)
                 }
             }
 
-            if (drawn)
+            if (drawn) // if snake body is drawn, continue
                 continue;
 
-            if (i == 0 || i == gameMechs->getBoardSizeY() - 1 || j == 0 || j == gameMechs->getBoardSizeX() - 1)
+            if (i == 0 || i == gameMechs->getBoardSizeY() - 1 || j == 0 || j == gameMechs->getBoardSizeX() - 1) // draw boundary
             {
                 MacUILib_printf("%c", '#');
             }
-            else if (i == current_food.y && j == current_food.x)
+            else if (i == current_food.y && j == current_food.x) // draw food symbol at appropriate positon
             {
                 MacUILib_printf("%c", current_food.getSymbol());
             }
             else
             {
-                MacUILib_printf("%c", ' ');
+                MacUILib_printf("%c", ' '); // draw empty spaces on the gameboard
             }
         }
         MacUILib_printf("\n");
     }
+
+    // outputs score, board size, Player direction, player coordinates and food coordinates.
     MacUILib_printf("\nScore = %d\nBoard Size: <%d,%d>\nPlayer Direction: %s\nPlayer position: <%d,%d>\nFood Coordinates: <%d,%d>\n", gameMechs->getScore(), gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY(), directionString, tempBody.x, tempBody.y, current_food.x, current_food.y);
 }
 void LoopDelay(void)
