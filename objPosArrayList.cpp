@@ -25,7 +25,7 @@ int objPosArrayList::getSize()
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
-    if (listSize < arrayCapacity)
+    if (listSize < arrayCapacity) // if size of objectlist (snake) hasn't reached max capacity. Keep inserting at the head.
     {
         for (int i = listSize; i > 0; i--)
         {
@@ -45,7 +45,7 @@ void objPosArrayList::insertHead(objPos thisPos)
 void objPosArrayList::insertTail(objPos thisPos)
 {
 
-    if (listSize < arrayCapacity)
+    if (listSize < arrayCapacity) // if size of objectlist (snake) hasn't reached max capacity. Keep inserting at the tail.
     {
         aList[listSize++].setObjPos(thisPos);
     }
@@ -56,45 +56,46 @@ void objPosArrayList::insertTail(objPos thisPos)
 }
 void objPosArrayList::removeHead()
 {
-    checkIndexValidity();
+    checkIndexValidity(); // if listsize is invalid. Cannot remove head.
 
     for (int i = 0; i < listSize - 1; i++)
     {
-        aList[i].setObjPos(aList[i + 1]);
+        aList[i].setObjPos(aList[i + 1]); // shifts all the elements from head towards tail by 1 position.
     }
-    listSize--;
+    listSize--; // removes the tail.
 }
 
 void objPosArrayList::removeTail()
 {
-    checkIndexValidity();
-    listSize--;
+    checkIndexValidity(); // if listsize is invalid. Cannot remove tail.
+    listSize--;           // otherwise remove tail.
 }
 
 void objPosArrayList::getHeadElement(objPos &returnPos)
 {
-    checkIndexValidity();
-    returnPos.setObjPos(aList[0]);
+    checkIndexValidity();          // if list size is invalid. Cannot access head of objectlist (snake).
+    returnPos.setObjPos(aList[0]); // otherwise, return the position  of head.
 }
 
 void objPosArrayList::getTailElement(objPos &returnPos)
 {
-    checkIndexValidity();
-    returnPos.setObjPos(aList[listSize - 1]);
+    checkIndexValidity();                     // if list size is invalid. Cannot access tail of objectlist (snake).
+    returnPos.setObjPos(aList[listSize - 1]); // otherwise, return position of tail.
 }
 
 void objPosArrayList::getElement(objPos &returnPos, int index)
 {
-    if (index >= 0 && index < listSize)
+    if (index >= 0 && index < listSize) // if index is within bounds of ObjArraylist. Return position of element at the index.
     {
         returnPos.setObjPos(aList[index]);
     }
     else
     {
-        throw std::out_of_range("Invalid index. Cannot get element.");
+        throw std::out_of_range("Invalid index. Cannot get element."); // otherwise, Cannot access position at index.
     }
 }
 
+// Checks whether the index is valid (within bounds) or invalid (outside of bounds).
 void objPosArrayList::checkIndexValidity()
 {
     if (listSize <= 0 || listSize > arrayCapacity)

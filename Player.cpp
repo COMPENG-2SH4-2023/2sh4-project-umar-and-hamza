@@ -7,17 +7,16 @@ Player::Player(GameMechs *thisGMRef)
 
     myDir = STOP;
 
-    // more actions to be included
-
+    // Accesses Gameboard size and stores it.
     int boardsizeX = mainGameMechsRef->getBoardSizeX();
     int boardsizeY = mainGameMechsRef->getBoardSizeY();
 
     objPos tempPos;
-    tempPos.setObjPos(boardsizeX / 2, boardsizeY / 2, '*');
+    tempPos.setObjPos(boardsizeX / 2, boardsizeY / 2, '*'); // sets player position at the centre of the gameboard.
 
     playerPosList = new objPosArrayList();
     food = new Food();
-    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos); // Snake head is created at the start of the game.
 }
 
 Player::~Player()
@@ -70,9 +69,10 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     objPos currentHead;
-    playerPosList->getHeadElement(currentHead);
+    playerPosList->getHeadElement(currentHead); // Accesses the position of the snake's head.
 
     // PPA3 Finite State Machine logic
+    // Border Wraparound Logic
     switch (myDir)
     {
     case UP:
@@ -100,6 +100,7 @@ void Player::movePlayer()
         break;
     }
 
+    // if snake eats itself. Set Exit and Lost flag to true. This Outputs a message telling user they died.
     if (checkSelfCollision(currentHead))
     {
         mainGameMechsRef->setLoseFlag();
@@ -107,18 +108,19 @@ void Player::movePlayer()
         return;
     }
 
+    // Snake's head is inserted at the new position and tail is removed. This gives the illusion that the snake is moving smoothly across the gameboard.
     playerPosList->insertHead(currentHead);
     playerPosList->removeTail();
 }
 bool Player::checkSelfCollision(const objPos &head)
 {
-
+    // iterate through the coordinates of every bodypart to check whether the head collides with any part.
     for (int i = 1; i < playerPosList->getSize(); i++)
     {
         objPos snakeBody;
         playerPosList->getElement(snakeBody, i);
 
-        if (head.x == snakeBody.x && head.y == snakeBody.y)
+        if (head.x == snakeBody.x && head.y == snakeBody.y) // if head collides with another body part. return true.
         {
             return true;
         }
