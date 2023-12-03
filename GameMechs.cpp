@@ -10,7 +10,7 @@ GameMechs::GameMechs()
     boardSizeY = 10;
 }
 
-GameMechs::GameMechs(int boardX, int boardY)
+GameMechs::GameMechs(int boardX, int boardY) // generating game mechanics (gameboard size, score, etc)
 {
     input = 0;
     score = 0;
@@ -20,7 +20,7 @@ GameMechs::GameMechs(int boardX, int boardY)
     boardSizeY = boardY;
 }
 
-// do you need a destructor?
+
 
 bool GameMechs::getExitFlagStatus()
 {
@@ -42,11 +42,11 @@ void GameMechs::setLoseFlag()
     loseFlag = true;
 }
 
-char GameMechs::getInput()
+char GameMechs::getInput() 
 {
-    if (MacUILib_hasChar())
+    if (MacUILib_hasChar()) // check to see if input has been pressed
     {
-        input = MacUILib_getChar();
+        input = MacUILib_getChar(); // ccapturing input pressed
     }
     return input;
 }
@@ -58,11 +58,6 @@ void GameMechs::setInput(char this_input)
 
 void GameMechs::clearInput()
 {
-    char c;
-    while (MacUILib_hasChar())
-    {
-        c = MacUILib_getChar();
-    }
     input = 0;
 }
 

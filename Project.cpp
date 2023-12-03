@@ -63,13 +63,9 @@ void RunLogic(void)
     objPos currentFood;
     food->getFoodPos(currentFood); // Accesses food position from Food class.
 
-    if (userInput == char(27)) // If user input is "esc" key. LoseFlag is set to true and Game quits.
+    if (userInput == char(27)) // If user input is "esc" key. ExitFlag is set to true and Game quits.
     {
         gameMechs->setExitTrue();
-    }
-    else if (userInput == 'k') // if user input is 'k'. Food is randomly generated on the gameboard.
-    {
-        food->generateFood(*(myPlayer->getPlayerPos()));
     }
 
     else if (myPlayer->checkFoodConsumption(currentFood)) // if player eats food, player length is increased and new food is generated on the gameboard.

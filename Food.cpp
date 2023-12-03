@@ -12,7 +12,7 @@ Food::~Food()
     
 }
 
-void Food::generateFood(objPosArrayList& playerPosList)
+void Food::generateFood(objPosArrayList& playerPosList) // generating position for food on board
 {
     int xfood;
     int yfood;
@@ -26,6 +26,7 @@ void Food::generateFood(objPosArrayList& playerPosList)
         foodPos.setObjPos(xfood, yfood, 'o');
 
         bool overlap = false;
+        //looping through player to continuously check if food is generated on top of player
         for (int i = 0; i < playerPosList.getSize(); i++)
         {
             objPos playerPos;
@@ -48,7 +49,7 @@ void Food::generateFood(objPosArrayList& playerPosList)
 }
 
 
-void Food::getFoodPos(objPos &returnPos)
+void Food::getFoodPos(objPos &returnPos) // returning food position so it can be used in collision with head logic
 {
     returnPos = foodPos;
 }
